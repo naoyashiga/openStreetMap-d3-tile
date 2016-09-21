@@ -47,6 +47,8 @@ class Viz {
     this.tile = Tile.tile()
     .size([this.width, this.height])
 
+    this.previousTransform = null
+
     this.zoom = d3.zoom()
     .on('zoom', this.zoomed.bind(this))
 
@@ -56,6 +58,8 @@ class Viz {
     this.vector = this.svg.append('path')
 
     this.loadData()
+
+    window.addEventListener('resize', this.resizeWindow.bind(this))
 
   }
 
@@ -74,14 +78,19 @@ class Viz {
 
   zoomed() {
     const transform = d3.event.transform
+    this.previousTransform = transform
 
+    this.updateTile(transform)
+  }
+
+  updateTile(transform) {
     const tiles = this.tile.scale(transform.k)
     .translate([transform.x, transform.y])()
 
     const image = this.raster
     .attr('transform', stringify(tiles.scale, tiles.translate))
     .selectAll('image')
-    .data(tiles, function(d) { return d;})
+    .data(tiles, (d) => (d))
 
     const imageSize = 256
 
@@ -113,8 +122,24 @@ class Viz {
   createScreen() {
     return d3.select('body')
     .append('svg')
+    .attr('class', 'map')
     .attr('width', this.width)
     .attr('height', this.height)
+  }
+
+  resizeWindow() {
+    this.width = window.innerWidth
+    this.height = window.innerHeight
+
+    d3.selectAll(".map")
+    .attr('width', this.width)
+    .attr('height', this.height)
+
+    this.tile = Tile.tile()
+    .size([this.width, this.height])
+
+    this.updateTile(this.previousTransform)
+
   }
 
 }

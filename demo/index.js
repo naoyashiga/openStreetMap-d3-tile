@@ -15,7 +15,7 @@ const location = {
 
 const locations = d3.range(1000).map(() => {
 
-  const wiggleScale = 0.1
+  const wiggleScale = 0.01
   const lng = location.longitude + wiggle(wiggleScale)
   const lat = location.latitude + wiggle(wiggleScale)
 
@@ -32,7 +32,9 @@ class Viz {
     this.height = window.innerHeight
 
     this.projection = this.createProjection()
-    this.path = d3.geoPath().projection(this.projection)
+    this.path = d3.geoPath()
+    .projection(this.projection)
+    .pointRadius(2)
 
     this.tile = Tile.tile()
     .size([this.width, this.height])
@@ -82,7 +84,11 @@ class Viz {
     image.exit().remove()
 
     image.enter().append('image')
-    .attr("xlink:href", function(d) { return "http://" + "abc"[d[1] % 3] + ".tile.openstreetmap.org/" + d[2] + "/" + d[0] + "/" + d[1] + ".png"; })
+    .attr("xlink:href", function(d) {
+      return "http://www.toolserver.org/tiles/bw-mapnik/" + d[2] + "/" + d[0] + "/" + d[1] + ".png"
+
+      // return "http://" + "abc"[d[1] % 3] + ".tile.openstreetmap.org/" + d[2] + "/" + d[0] + "/" + d[1] + ".png";
+    })
       .attr("x", function(d) { return d[0] * 256; })
       .attr("y", function(d) { return d[1] * 256; })
       .attr("width", 256)

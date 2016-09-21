@@ -1,0 +1,11 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+path {
+  fill: none;
+  stroke: red;
+  stroke-linejoin: round;
+  stroke-width: 1.5px;
+}

@@ -16,7 +16,7 @@ var location = {
   longitude: 139.745433
 };
 
-var locationsCount = 100;
+var locationsCount = 500;
 
 var locations = d3.range(locationsCount).map(function () {
 

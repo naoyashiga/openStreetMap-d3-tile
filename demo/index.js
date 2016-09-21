@@ -9,7 +9,7 @@ const location = {
   longitude: 139.745433
 }
 
-const locationsCount = 100
+const locationsCount = 500
 
 const locations = d3.range(locationsCount).map(() => {
 
